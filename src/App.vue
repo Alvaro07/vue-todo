@@ -31,9 +31,9 @@ export default {
   justify-content: center;
   align-items: center;
 
-  height: 100%;
+  min-height: 100%;
   background-color: $darkGreen;
-
+  padding: 30px;
   font-family: Arial, Helvetica, sans-serif;
 }
 </style>

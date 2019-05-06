@@ -11,21 +11,20 @@
         <p class="todo__form__error" v-show="errorMessage">{{ errorMessage }}</p>
       </form>
 
-      <div v-show="tasks.length">
-        <ul class="todo__list">
-          <li v-for="(task, index) in tasks" v-bind:key="index">
-            {{ task.name }}
-            <span v-if="task.priority !== null">- priority: {{ task.priority }}</span>
-          </li>
-        </ul>
-      </div>
+      <v-todo-list v-if="tasks.length" listTitle="Todo List" :tasks="tasks"></v-todo-list>
+      <v-todo-list v-if="orderAscTask.length" listTitle="Todo ascendent list" :tasks="orderAscTask"></v-todo-list>
     </main>
   </section>
 </template>
 
 <script>
+import TodoList from "./TodoList.vue";
+
 export default {
   name: "ToDo",
+  components: {
+    "v-todo-list": TodoList
+  },
   data: function() {
     return {
       taskName: null,
@@ -35,7 +34,7 @@ export default {
     };
   },
   methods: {
-    addNewTask: function(e) {
+    addNewTask() {
       if (this.taskName !== null && this.taskName.length) {
         if (this.taskPriority === "") this.taskPriority = null;
 
@@ -51,20 +50,17 @@ export default {
         this.errorMessage = "Complete all fields";
       }
     }
+  },
+  computed: {
+    orderAscTask() {
+      return this.tasks.sort((a, b) => a.priority - b.priority).filter(e => e.priority !== null);
+    }
   }
 };
 </script>
 
 <style scoped lang="scss" >
 .todo {
-  background-color: white;
-  padding: 15px;
-  border-radius: 5px;
-
-  @include mediaTablet {
-    padding: 30px;
-  }
-
   /**
   * Header
   */
@@ -82,6 +78,14 @@ export default {
   */
 
   &__form {
+    background-color: white;
+    padding: 15px;
+    border-radius: 5px;
+
+    @include mediaTablet {
+      padding: 30px;
+    }
+
     input {
       display: block;
       width: 100%;
@@ -97,18 +101,6 @@ export default {
     &__error {
       padding-top: 20px;
       color: red;
-    }
-  }
-
-  &__list {
-    padding-top: 20px;
-    margin-top: 20px;
-    border-top: 1px dotted #ccc;
-
-    li {
-      padding-bottom: 10px;
-      margin-bottom: 10px;
-      border-bottom: 1px dotted #ccc;
     }
   }
 }
