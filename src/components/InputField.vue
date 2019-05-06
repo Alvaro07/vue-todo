@@ -3,8 +3,8 @@
     class="c-input"
     :type="inputType"
     :placeholder="placeholderText"
-    :value="value"
-    @input="updateValue()"
+    v-model="content"
+    @input="handleInput"
   >
 </template>
 
@@ -13,6 +13,9 @@
 export default {
   name: "v-input",
   props: {
+    value: {
+      type: String
+    },
     inputType: {
       type: String,
       required: true
@@ -22,11 +25,14 @@ export default {
       required: false
     }
   },
+  data() {
+    return {
+      content: this.value
+    };
+  },
   methods: {
-    updateValue() {
-      this.$emit("input", {
-        value: this.value
-      });
+    handleInput(e) {
+      this.$emit("input", this.content);
     }
   }
 };
