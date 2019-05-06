@@ -6,11 +6,10 @@
 
     <main>
       <form class="todo__form">
-        <input type="text" placeholder="Task name" v-model="taskName">
-        <input type="number" placeholder="Priority" v-model="taskPriority">
-        
+        <v-input inputType="text" placeholderText="Task name" v-model="taskName"></v-input>
+        <v-input inputType="number" placeholderText="Priority" v-model="taskPriority"></v-input>
         <v-button text="Add task 2" :onButtonClick="addNewTask"></v-button>
-        
+
         <p class="todo__form__error" v-show="errorMessage">{{ errorMessage }}</p>
       </form>
 
@@ -23,12 +22,14 @@
 <script>
 import TodoList from "./TodoList.vue";
 import Button from "./Button.vue";
+import InputField from "./InputField.vue";
 
 export default {
   name: "ToDo",
   components: {
     "v-todo-list": TodoList,
-    "v-button": Button
+    "v-button": Button,
+    "v-input": InputField
   },
   data: function() {
     return {
@@ -89,13 +90,6 @@ export default {
 
     @include mediaTablet {
       padding: 30px;
-    }
-
-    input {
-      display: block;
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 10px;
     }
 
     &__error {
