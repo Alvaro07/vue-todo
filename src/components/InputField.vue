@@ -3,16 +3,20 @@
     class="c-input"
     :type="inputType"
     :placeholder="placeholderText"
-    :value="value"
-    @input="updateValue()"
+    :value="content"
+    v-model="content"
+    @input="handleInput"
   >
 </template>
 
 
 <script>
 export default {
-  name: "v-input",
+  name: "inputField",
   props: {
+    value: {
+      type: String
+    },
     inputType: {
       type: String,
       required: true
@@ -22,11 +26,17 @@ export default {
       required: false
     }
   },
+  data() {
+    return {
+      content: this.value
+    };
+  },
+  updated(){
+    console.log(this.content)
+  },
   methods: {
-    updateValue() {
-      this.$emit("input", {
-        value: this.value
-      });
+    handleInput(e) {
+      this.$emit("input", this.content);
     }
   }
 };

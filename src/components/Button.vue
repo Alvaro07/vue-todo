@@ -5,7 +5,7 @@
 
 <script>
 export default {
-  name: "v-button",
+  name: "Button",
   props: {
     text: {
       type: String,
