@@ -14,7 +14,12 @@
       </form>
 
       <v-todo-list v-if="tasks.length" listTitle="Tasks list" :tasks="tasks"></v-todo-list>
-      <v-todo-list v-if="orderAscTask.length" listTitle="Prioritaries tasks" :tasks="orderAscTask"></v-todo-list>
+      <v-todo-list
+        v-if="orderAscTasks.length"
+        listTitle="Prioritaries tasks"
+        :tasks="orderAscTasks"
+      ></v-todo-list>
+      <v-todo-list v-if="completedTasks.length" listTitle="Completed tasks" :tasks="completedTasks"></v-todo-list>
     </main>
   </section>
 </template>
@@ -42,24 +47,28 @@ export default {
   methods: {
     addNewTask() {
       if (this.taskName !== null && this.taskName.length) {
-        if (this.taskPriority === "") this.taskPriority = null;
+        // if (this.taskPriority === "") this.taskPriority = null;
 
         this.tasks.unshift({
           name: this.taskName,
-          priority: this.taskPriority
+          priority: this.taskPriority,
+          completed: false
         });
 
-        this.taskName = null;
-        this.taskPriority = null;
         this.errorMessage = null;
+        // this.taskName = null;
+        // this.taskPriority = null;
       } else {
         this.errorMessage = "Complete all fields";
       }
     }
   },
   computed: {
-    orderAscTask() {
+    orderAscTasks() {
       return this.tasks.sort((a, b) => a.priority - b.priority).filter(e => e.priority !== null);
+    },
+    completedTasks() {
+      return this.tasks.filter(e => e.completed === true);
     }
   }
 };

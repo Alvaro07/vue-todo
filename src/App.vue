@@ -16,15 +16,7 @@ export default {
 </script>
 
 <style lang="scss">
-/**
- * Base styles
- */
-
 @import "styles/index";
-
-/**
- * App styles
- */
 
 .app {
   display: flex;

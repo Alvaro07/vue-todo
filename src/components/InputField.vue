@@ -3,6 +3,7 @@
     class="c-input"
     :type="inputType"
     :placeholder="placeholderText"
+    :value="content"
     v-model="content"
     @input="handleInput"
   >
@@ -11,7 +12,7 @@
 
 <script>
 export default {
-  name: "v-input",
+  name: "inputField",
   props: {
     value: {
       type: String
@@ -29,6 +30,9 @@ export default {
     return {
       content: this.value
     };
+  },
+  updated(){
+    console.log(this.content)
   },
   methods: {
     handleInput(e) {
