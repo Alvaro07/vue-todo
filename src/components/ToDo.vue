@@ -8,7 +8,7 @@
       <form class="todo__form">
         <v-input inputType="text" placeholderText="Task name" v-model="taskName"></v-input>
         <v-input inputType="number" placeholderText="Priority" v-model="taskPriority"></v-input>
-        <v-button text="Add task 2" :onButtonClick="addNewTask"></v-button>
+        <v-button text="Add task" :onButtonClick="addNewTask"></v-button>
 
         <p class="todo__form__error" v-show="errorMessage">{{ errorMessage }}</p>
       </form>
@@ -28,6 +28,7 @@
 import TodoList from "./TodoList.vue";
 import Button from "./Button.vue";
 import InputField from "./InputField.vue";
+import { eventBus } from "../event-bus.js";
 
 export default {
   name: "ToDo",
@@ -47,7 +48,7 @@ export default {
   methods: {
     addNewTask() {
       if (this.taskName !== null && this.taskName.length) {
-        // if (this.taskPriority === "") this.taskPriority = null;
+        if (this.taskPriority === "") this.taskPriority = null;
 
         this.tasks.unshift({
           name: this.taskName,
@@ -56,8 +57,10 @@ export default {
         });
 
         this.errorMessage = null;
-        // this.taskName = null;
-        // this.taskPriority = null;
+        this.taskName = null;
+        this.taskPriority = null;
+
+        eventBus.$emit("resetField");
       } else {
         this.errorMessage = "Complete all fields";
       }
