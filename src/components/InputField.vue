@@ -3,41 +3,28 @@
     class="c-input"
     :type="inputType"
     :placeholder="placeholderText"
-    :value="content"
-    v-model="content"
-    @input="handleInput"
+    :value="value"
+    @input="getData($event.target.value)"
+    ref="field"
   >
 </template>
 
 
 <script>
+import { eventBus } from "../event-bus.js";
+
 export default {
   name: "inputField",
-  props: {
-    value: {
-      type: String
-    },
-    inputType: {
-      type: String,
-      required: true
-    },
-    placeholderText: {
-      type: String,
-      required: false
-    }
-  },
-  data() {
-    return {
-      content: this.value
-    };
-  },
-  updated(){
-    console.log(this.content)
-  },
+  props: ["value", "inputType", "placeholderText"],
   methods: {
-    handleInput(e) {
-      this.$emit("input", this.content);
+    getData(data) {
+      this.$emit("input", data);
     }
+  },
+  created() {
+    eventBus.$on("resetField", () => {
+      this.$refs.field.value = "";
+    });
   }
 };
 </script>
