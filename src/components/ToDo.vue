@@ -47,9 +47,6 @@ export default {
     eventBus.$on("deleteEventTask", task => {
       this.tasks = this.tasks.filter(e => e !== task);
     });
-    eventBus.$on("completeEventTask", task => {
-      
-    });
   },
   methods: {
     addNewTask() {

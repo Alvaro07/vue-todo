@@ -2,7 +2,6 @@
   <li class="task" ref="refItemList">
     <h3 class="task__title" :for="'task-' + index">{{ task.name }}</h3>
     <div class="task__actions">
-      <!-- <v-button text="Complete" extraClass="margin-right-10" :onButtonClick="completeTask" small></v-button> -->
       <font-awesome-icon icon="trash-alt" @click="deleteTask(task)" class="task__actions__icon"/>
     </div>
   </li>
@@ -28,9 +27,6 @@ export default {
   methods: {
     deleteTask(task) {
       eventBus.$emit("deleteEventTask", task);
-    },
-    completeTask() {
-      eventBus.$emit("completeEventTask", this.task);
     }
   }
 };
