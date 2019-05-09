@@ -1,5 +1,5 @@
 <template>
-  <button class="c-button" @click.prevent="onClick">{{ text }}</button>
+  <button class="c-button" :class="[smallClass, extraClass]" @click.prevent="onClick">{{ text }}</button>
 </template>
 
 
@@ -11,14 +11,20 @@ export default {
       type: String,
       required: true
     },
-    onButtonClick: {
-      type: Function,
-      required: false
-    }
+    onButtonClick: Function,
+    extraClass: String,
+    small: Boolean
   },
   methods: {
     onClick() {
       this.onButtonClick();
+    }
+  },
+  computed: {
+    smallClass: function() {
+      return {
+        "c-button--small": this.small
+      };
     }
   }
 };
@@ -27,8 +33,25 @@ export default {
 
 <style lang="scss">
 .c-button {
-  padding: 10px;
-  width: 100%;
+  padding: 15px;
   cursor: pointer;
+
+  background-color: $blue;
+  border: none;
+  border-radius: 3px;
+  transition: 0.3s all ease;
+
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: white;
+
+  &:hover {
+    background-color: $darkBlue;
+  }
+
+  &--small {
+    padding: 5px 10px;
+    font-size: 1.4rem;
+  }
 }
 </style>
