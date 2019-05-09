@@ -12,13 +12,13 @@
           v-model="taskName"
           extraClass="todo__form__field"
         ></v-input>
-        <v-button text="Add task" :onButtonClick="addNewTask" extraClass="todo__form__button"></v-button>
+        <v-button text="Add task" :onButtonClick="addNewTask" extraClass="todo__form__button" ></v-button>
         <p class="todo__form__error" v-show="errorMessage">{{ errorMessage }}</p>
       </form>
     </header>
 
     <main class="todo__main">
-      <v-todo-list v-if="tasks.length" listTitle="Tasks list" :tasks="tasks" @deleteEventTask="deleteTask" ></v-todo-list>
+      <v-todo-list v-if="tasks.length" listTitle="Tasks list" :tasks="tasks"></v-todo-list>
     </main>
   </section>
 </template>
@@ -43,12 +43,21 @@ export default {
       tasks: []
     };
   },
+  created() {
+    eventBus.$on("deleteEventTask", task => {
+      this.tasks = this.tasks.filter(e => e !== task);
+    });
+    eventBus.$on("completeEventTask", task => {
+      
+    });
+  },
   methods: {
     addNewTask() {
       if (this.taskName !== null && this.taskName.length) {
         this.tasks.unshift({
           name: this.taskName,
-          completed: false
+          completed: false,
+          selected: false
         });
 
         this.errorMessage = null;
@@ -57,14 +66,6 @@ export default {
       } else {
         this.errorMessage = "Set a task name";
       }
-    },
-    deleteTask(task){
-      this.tasks = this.tasks.filter(e => e !== task)
-    }
-  },
-  computed: {
-    orderAscTasks() {
-      return this.tasks.sort((a, b) => a.priority - b.priority).filter(e => e.priority !== null);
     }
   }
 };

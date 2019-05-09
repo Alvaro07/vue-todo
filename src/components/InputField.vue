@@ -22,9 +22,9 @@ export default {
       this.$emit("input", data);
     }
   },
-  created() {
+  updated() {
     eventBus.$on("resetField", () => {
-      this.$refs.field.value = "";
+      this.$refs.field.value = null;
     });
   }
 };
@@ -35,11 +35,11 @@ export default {
 .c-input {
   display: block;
   width: 100%;
-  
+
   padding: 15px;
   border-radius: 2px;
-  border: 1px solid rgba($grey, .3);
-  
+  border: 1px solid rgba($grey, 0.3);
+
   font-size: 1.4rem;
   color: $grey;
 }
