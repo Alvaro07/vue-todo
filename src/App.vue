@@ -21,11 +21,13 @@ export default {
 .app {
   display: flex;
   justify-content: center;
-  align-items: center;
 
   min-height: 100%;
-  background-color: $darkGreen;
+  background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
   padding: 30px;
-  font-family: Arial, Helvetica, sans-serif;
+
+  @include mediaTablet {
+    height: 100%;
+  }
 }
 </style>

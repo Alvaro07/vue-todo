@@ -1,25 +1,24 @@
 <template>
   <section class="todo">
     <header class="todo__header">
-      <h1 class="todo__header__title">Your Vue to-do tasks</h1>
-    </header>
-
-    <main>
+      <h1 class="todo__header__title">
+        Your Vue to-do tasks
+        <span class="todo__header__title__icons">📋📆</span>
+      </h1>
       <form class="todo__form">
-        <v-input inputType="text" placeholderText="Task name" v-model="taskName"></v-input>
-        <v-input inputType="number" placeholderText="Priority" v-model="taskPriority"></v-input>
-        <v-button text="Add task" :onButtonClick="addNewTask"></v-button>
-
+        <v-input
+          inputType="text"
+          placeholderText="Task name"
+          v-model="taskName"
+          extraClass="todo__form__field"
+        ></v-input>
+        <v-button text="Add task" :onButtonClick="addNewTask" extraClass="todo__form__button"></v-button>
         <p class="todo__form__error" v-show="errorMessage">{{ errorMessage }}</p>
       </form>
+    </header>
 
-      <v-todo-list v-if="tasks.length" listTitle="Tasks list" :tasks="tasks"></v-todo-list>
-      <v-todo-list
-        v-if="orderAscTasks.length"
-        listTitle="Prioritaries tasks"
-        :tasks="orderAscTasks"
-      ></v-todo-list>
-      <v-todo-list v-if="completedTasks.length" listTitle="Completed tasks" :tasks="completedTasks"></v-todo-list>
+    <main class="todo__main">
+      <v-todo-list v-if="tasks.length" listTitle="Tasks list" :tasks="tasks" @deleteEventTask="deleteTask" ></v-todo-list>
     </main>
   </section>
 </template>
@@ -40,7 +39,6 @@ export default {
   data: function() {
     return {
       taskName: null,
-      taskPriority: null,
       errorMessage: null,
       tasks: []
     };
@@ -48,46 +46,79 @@ export default {
   methods: {
     addNewTask() {
       if (this.taskName !== null && this.taskName.length) {
-        if (this.taskPriority === "") this.taskPriority = null;
-
         this.tasks.unshift({
           name: this.taskName,
-          priority: this.taskPriority,
           completed: false
         });
 
         this.errorMessage = null;
         this.taskName = null;
-        this.taskPriority = null;
-
         eventBus.$emit("resetField");
       } else {
-        this.errorMessage = "Complete all fields";
+        this.errorMessage = "Set a task name";
       }
+    },
+    deleteTask(task){
+      this.tasks = this.tasks.filter(e => e !== task)
     }
   },
   computed: {
     orderAscTasks() {
       return this.tasks.sort((a, b) => a.priority - b.priority).filter(e => e.priority !== null);
-    },
-    completedTasks() {
-      return this.tasks.filter(e => e.completed === true);
     }
   }
 };
 </script>
 
-<style scoped lang="scss" >
+<style lang="scss" >
 .todo {
+  width: 100%;
+  max-width: 720px;
+
+  @include mediaTablet {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
   /**
   * Header
   */
 
-  .todo__header {
+  &__header {
     &__title {
-      font-size: 2.2rem;
-      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 2.8rem;
+      font-weight: 900;
+      text-shadow: 2px 2px white;
       margin-bottom: 20px;
+      color: $grey;
+
+      @include mediaTablet {
+        font-size: 4rem;
+      }
+
+      @include mediaDesktop {
+        font-size: 5rem;
+      }
+
+      &__icons {
+        margin-left: 10px;
+        font-size: 2rem;
+
+        @include mediaTablet {
+          margin-left: 15px;
+          font-size: 2.4rem;
+        }
+
+        @include mediaDesktop {
+          margin-left: 20px;
+          font-size: 3.2rem;
+        }
+      }
     }
   }
 
@@ -96,17 +127,57 @@ export default {
   */
 
   &__form {
-    background-color: white;
-    padding: 15px;
-    border-radius: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
 
     @include mediaTablet {
-      padding: 30px;
+      padding-right: 7px;
+    }
+
+    &__field {
+      flex: 1;
+      margin-right: 10px;
+    }
+
+    &__button {
+      width: 100px;
     }
 
     &__error {
+      width: 100%;
       padding-top: 20px;
       color: red;
+    }
+  }
+
+  /**
+  * Main
+  */
+
+  &__main {
+    @include mediaTablet {
+      flex: 1;
+      overflow: auto;
+      padding-right: 10px;
+
+      &::-webkit-scrollbar-track {
+        background-color: rgba($grey, 0.2);
+        border-radius: 10px;
+      }
+
+      &::-webkit-scrollbar {
+        height: 10px;
+        width: 10px;
+        background-color: #eef1f5;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: rgba($grey, 0.3);
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 3px rgba($grey, 0.2);
+        cursor: pointer;
+      }
     }
   }
 }

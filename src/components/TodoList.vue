@@ -1,12 +1,15 @@
 <template>
   <div class="todo-list">
-    <h2 class="todo-list__title">{{ listTitle }}</h2>
-
     <ul>
-      <li v-for="(task, index) in tasks" v-bind:key="index">
-        <span class="bold">{{ index }}:</span>
-        {{ task.name }}
-        <span v-if="task.priority !== null">- priority: {{ task.priority }}</span>
+      <li class="todo-list__item" v-for="(task, index) in tasks" :key="index">
+        <h3 class="todo-list__item__title">{{ task.name }}</h3>
+        <div class="todo-list__item__actions">
+          <font-awesome-icon
+            icon="trash-alt"
+            @click="deleteTask(task)"
+            class="todo-list__item__actions__icon"
+          />
+        </div>
       </li>
     </ul>
   </div>
@@ -25,6 +28,11 @@ export default {
       type: Array,
       required: true
     }
+  },
+  methods: {
+    deleteTask(task) {
+      this.$emit("deleteEventTask", task);
+    }
   }
 };
 </script>
@@ -32,25 +40,34 @@ export default {
 
 <style lang="scss">
 .todo-list {
-  background-color: white;
-  padding: 15px 15px 5px 15px;
-  border-radius: 5px;
-  margin-top: 20px;
+  &__item {
+    display: flex;
 
-  @include mediaTablet {
-    padding: 30px 30px 20px 30px;
-  }
+    padding: 15px;
+    margin-bottom: 12px;
+    background-color: white;
+    box-shadow: 3px 3px rgba($grey, 0.1);
+    transition: 0.3s all ease;
 
-  &__title {
-    font-weight: 700;
-    font-size: 1.8rem;
-    padding-bottom: 15px;
-  }
+    &:last-child {
+      margin-bottom: 3px;
+    }
 
-  ul {
-    display: inline-block;
-    li {
-      padding-bottom: 10px;
+    &__title {
+      flex: 1;
+    }
+
+    &__actions {
+      &__icon {
+        font-size: 1.6rem;
+        transition: 0.3s all ease;
+        cursor: pointer;
+        color: $lightRed;
+
+        &:hover {
+          color: $red;
+        }
+      }
     }
   }
 }
