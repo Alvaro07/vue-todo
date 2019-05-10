@@ -1,29 +1,9 @@
-# vue-todo
+# Vue-todo
 
-## Project setup
-```
-npm install
-```
+### A todo experiment
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+Developed with Vue + Vuex
 
-### Compiles and minifies for production
-```
-npm run build
-```
+--
 
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Link: [https://alvaro07.github.io/vue-todo/](https://alvaro07.github.io/vue-todo/)
