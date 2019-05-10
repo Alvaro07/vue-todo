@@ -1,7 +1,25 @@
 <template>
-  <li class="task" ref="refItemList">
+  <li class="task" :class="{'task--completed': task.completed}" ref="refItemList">
     <h3 class="task__title" :for="'task-' + index">{{ task.name }}</h3>
+
     <div class="task__actions">
+      <v-button
+        v-if="task.completed"
+        text="activate"
+        small
+        extraClass="margin-right-10"
+        :onButtonClick="completeTask"
+      ></v-button>
+
+      <v-button
+        v-else
+        text="complete"
+        small
+        green
+        extraClass="margin-right-10"
+        :onButtonClick="completeTask"
+      ></v-button>
+
       <font-awesome-icon icon="trash-alt" @click="deleteTask(task)" class="task__actions__icon"/>
     </div>
   </li>
@@ -15,7 +33,7 @@ import Button from "./Button.vue";
 export default {
   name: "task",
   components: {
-    'v-button': Button
+    "v-button": Button
   },
   props: {
     task: {
@@ -26,7 +44,10 @@ export default {
   },
   methods: {
     deleteTask(task) {
-      eventBus.$emit("deleteEventTask", task);
+      this.$store.commit("removeTask", task);
+    },
+    completeTask(task) {
+      this.$store.commit("completeTask", this.task);
     }
   }
 };
@@ -46,6 +67,11 @@ export default {
 
   &:last-child {
     margin-bottom: 3px;
+  }
+
+  &--completed {
+    text-decoration: line-through;
+    background-color: $lightGreen;
   }
 
   &__title {

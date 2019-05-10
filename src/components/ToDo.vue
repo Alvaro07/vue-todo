@@ -5,7 +5,6 @@
         Your Vue to-do tasks
         <span class="todo__header__title__icons">📋📆</span>
       </h1>
-      {{ test }}
       <form class="todo__form">
         <v-input
           inputType="text"
@@ -19,7 +18,14 @@
     </header>
 
     <main class="todo__main">
-      <v-todo-list v-if="tasks.length" listTitle="Tasks list" :tasks="tasks"></v-todo-list>
+      <v-todo-list v-if="tasks.length" :tasks="tasks"></v-todo-list>
+
+      <v-todo-list
+        v-if="completedTasks.length"
+        listTitle="Completed tasks"
+        :tasks="completedTasks"
+        extraClass="margin-top-30"
+      ></v-todo-list>
     </main>
   </section>
 </template>
@@ -29,7 +35,7 @@ import TodoList from "./TodoList.vue";
 import Button from "./Button.vue";
 import InputField from "./InputField.vue";
 import { eventBus } from "../event-bus.js";
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 export default {
   name: "ToDo",
@@ -44,19 +50,16 @@ export default {
       errorMessage: null
     };
   },
-  created() {
-    eventBus.$on("deleteEventTask", task => {
-      this.tasks = this.tasks.filter(e => e !== task);
-    });
-  },
   methods: {
     addNewTask() {
       if (this.taskName !== null && this.taskName.length) {
-        this.$store.state.tasks.unshift({
+        const data = {
           name: this.taskName,
           completed: false
-        });
+        };
+        this.$store.commit("addTask", data);
 
+        // reset
         this.errorMessage = null;
         this.taskName = null;
         eventBus.$emit("resetField");
@@ -65,10 +68,10 @@ export default {
       }
     }
   },
-  computed: mapState({
-    test: state => state.test,
-    tasks: state => state.tasks
-  })
+  computed: {
+    ...mapState(["tasks"]),
+    ...mapGetters(["completedTasks"])
+  }
 };
 </script>
 
@@ -177,7 +180,7 @@ export default {
       &::-webkit-scrollbar-thumb {
         background-color: rgba($grey, 0.3);
         border-radius: 10px;
-        -webkit-box-shadow: inset 0 0 3px rgba($grey, 0.2);
+        box-shadow: inset 0 0 3px rgba($grey, 0.2);
         cursor: pointer;
       }
     }
