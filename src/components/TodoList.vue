@@ -1,6 +1,6 @@
 <template>
   <div class="todo-list" :class="extraClass">
-    <h2 class="todo-list__title">{{ listTitle}}</h2>
+    <h2 class="todo-list__title" v-if="listTitle">{{ listTitle }} ({{ tasks.length }})</h2>
     <slot></slot>
     <ul>
       <v-task v-for="(task, index) in tasks" :key="index" :task="task" :index="index"></v-task>
@@ -36,6 +36,5 @@ export default {
     font-weight: 700;
     padding-bottom: 10px;
   }
-
 }
 </style>
