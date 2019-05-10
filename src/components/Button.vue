@@ -1,5 +1,9 @@
 <template>
-  <button class="c-button" :class="[smallClass, extraClass]" @click.prevent="onClick">{{ text }}</button>
+  <button
+    class="c-button"
+    :class="[smallClass, extraClass, greenClass]"
+    @click.prevent="onClick"
+  >{{ text }}</button>
 </template>
 
 
@@ -13,7 +17,8 @@ export default {
     },
     onButtonClick: Function,
     extraClass: String,
-    small: Boolean
+    small: Boolean,
+    green: Boolean
   },
   methods: {
     onClick() {
@@ -24,6 +29,11 @@ export default {
     smallClass: function() {
       return {
         "c-button--small": this.small
+      };
+    },
+    greenClass: function() {
+      return {
+        "c-button--green": this.green
       };
     }
   }
@@ -52,6 +62,13 @@ export default {
   &--small {
     padding: 5px 10px;
     font-size: 1.4rem;
+  }
+
+  &--green {
+    background-color: $green;
+    &:hover {
+      background-color: $darkGreen;
+    }
   }
 }
 </style>
