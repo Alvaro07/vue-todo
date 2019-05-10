@@ -50,7 +50,6 @@ export default {
 
   &__title {
     flex: 1;
-    cursor: pointer;
   }
 
   &__actions {

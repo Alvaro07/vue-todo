@@ -5,6 +5,7 @@
         Your Vue to-do tasks
         <span class="todo__header__title__icons">📋📆</span>
       </h1>
+      {{ test }}
       <form class="todo__form">
         <v-input
           inputType="text"
@@ -12,7 +13,7 @@
           v-model="taskName"
           extraClass="todo__form__field"
         ></v-input>
-        <v-button text="Add task" :onButtonClick="addNewTask" extraClass="todo__form__button" ></v-button>
+        <v-button text="Add task" :onButtonClick="addNewTask" extraClass="todo__form__button"></v-button>
         <p class="todo__form__error" v-show="errorMessage">{{ errorMessage }}</p>
       </form>
     </header>
@@ -28,6 +29,7 @@ import TodoList from "./TodoList.vue";
 import Button from "./Button.vue";
 import InputField from "./InputField.vue";
 import { eventBus } from "../event-bus.js";
+import { mapState } from "vuex";
 
 export default {
   name: "ToDo",
@@ -39,8 +41,7 @@ export default {
   data: function() {
     return {
       taskName: null,
-      errorMessage: null,
-      tasks: []
+      errorMessage: null
     };
   },
   created() {
@@ -51,10 +52,9 @@ export default {
   methods: {
     addNewTask() {
       if (this.taskName !== null && this.taskName.length) {
-        this.tasks.unshift({
+        this.$store.state.tasks.unshift({
           name: this.taskName,
-          completed: false,
-          selected: false
+          completed: false
         });
 
         this.errorMessage = null;
@@ -64,7 +64,11 @@ export default {
         this.errorMessage = "Set a task name";
       }
     }
-  }
+  },
+  computed: mapState({
+    test: state => state.test,
+    tasks: state => state.tasks
+  })
 };
 </script>
 
