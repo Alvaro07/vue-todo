@@ -96,7 +96,7 @@ export default {
       align-items: center;
       justify-content: center;
 
-      font-size: 2.8rem;
+      font-size: 2.4rem;
       font-weight: 900;
       text-shadow: 2px 2px white;
       margin-bottom: 20px;
@@ -113,6 +113,8 @@ export default {
       &__icons {
         margin-left: 10px;
         font-size: 2rem;
+        display: block;
+        min-width: 55px;
 
         @include mediaTablet {
           margin-left: 15px;
